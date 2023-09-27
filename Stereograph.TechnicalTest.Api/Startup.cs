@@ -6,8 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 
-using Stereograph.TechnicalTest.Api.Models;
-using System;
+using Stereograph.TechnicalTest.Api.Utils;
 
 namespace Stereograph.TechnicalTest.Api;
 
@@ -33,7 +32,7 @@ public class Startup
         services.AddSwaggerGen(options =>
         {
             options.DescribeAllParametersInCamelCase();
-            options.SwaggerDoc("v1", new OpenApiInfo { Title = "Stereograph.TechTechnique.Api", Version = "v1" });
+            options.SwaggerDoc("v1", new OpenApiInfo { Title = "Stereograph.TestTechnique.Api", Version = "v1" });
             options.CustomSchemaIds(schema => schema.FullName);
         });
 
@@ -48,7 +47,7 @@ public class Startup
             application
                 .UseDeveloperExceptionPage()
                 .UseSwagger()
-                .UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "Stereograph.TechTechnique.Api V1"));
+                .UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "Stereograph.TestTechnique.Api V1"));
         }
 
         application
@@ -57,9 +56,9 @@ public class Startup
             .UseCors()
             .UseEndpoints(endpoints => endpoints.MapControllers());
 
-        using IServiceScope scope = application.ApplicationServices.CreateScope();
-        IServiceProvider services = scope.ServiceProvider;
-        ApplicationDbContext appDbContext = services.GetRequiredService<ApplicationDbContext>();
+        using var scope = application.ApplicationServices.CreateScope();
+        var services = scope.ServiceProvider;
+        var appDbContext = services.GetRequiredService<ApplicationDbContext>();
         appDbContext.Database.Migrate();
     }
 }
