@@ -38,6 +38,8 @@ public class Startup
 
         services
             .AddControllers();
+        
+        services.AddScoped(typeof(IPeopleRepository), typeof(EfPeopleRepository));
     }
 
     public void Configure(IApplicationBuilder application, IWebHostEnvironment environment)
