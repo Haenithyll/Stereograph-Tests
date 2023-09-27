@@ -1,0 +1,7 @@
+/.idea
+
+/Stereograph.TechnicalTest.Api/bin
+/Stereograph.TechnicalTest.Api/obj
+
+/Stereograph.TechnicalTest.Tests/bin
+/Stereograph.TechnicalTest.Tests/obj
