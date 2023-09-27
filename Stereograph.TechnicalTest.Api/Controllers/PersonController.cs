@@ -35,7 +35,7 @@ public class PersonController : ControllerBase
     }
     
     [HttpGet("id")]
-    public ActionResult<IEnumerable<Entities.EPerson>> GetPersonById([FromQuery] int id)
+    public ActionResult<IEnumerable<EPerson>> GetPersonById([FromQuery] int id)
     {
         if (id <= 0)
             return BadRequest("The provided id must be greater than 0");
@@ -89,5 +89,19 @@ public class PersonController : ControllerBase
         _peopleRepository.Save();
 
         return Ok("People cleared successfully.");
+    }
+    
+    [HttpPost("import-csv")]
+    public IActionResult ImportCsv()
+    {
+        var csvService = new CsvService();
+        var csvDataList = csvService.ReadCsv("Resources/Persons.csv");
+
+        foreach (var csvData in csvDataList)
+            _peopleRepository.Insert(csvData);
+
+        _peopleRepository.Save();
+        
+        return Ok("CSV data imported successfully.");
     }
 }
